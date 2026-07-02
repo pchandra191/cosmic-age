@@ -18,7 +18,13 @@
       "bundleIdentifier": "com.cosmicage.app"
     },
     "android": {
-      "backgroundColor": "#000014"
+      "backgroundColor": "#000014",
+      "package": "com.cosmicage.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#000014"
+      }
     },
     "web": {
       "favicon": "./assets/images/icon.png",
