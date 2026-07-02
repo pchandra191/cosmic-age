@@ -1,0 +1,434 @@
+Build a complete Android application named **Cosmic Age** using **Kotlin + Jetpack Compose** with a modern, premium UI and smooth animations.
+
+## App Concept
+
+Cosmic Age helps users understand their life in the context of the universe. The user enters their date of birth (and optionally birth time), and the app calculates detailed statistics about their age across Earth, the Solar System, and the Universe.
+
+The design should feel like a mix of NASA, Apple, and a premium astronomy application.
+
+---
+
+# Technical Requirements
+
+* Native Android App
+* Kotlin
+* Jetpack Compose
+* Material 3
+* MVVM Architecture
+* Navigation Component
+* DataStore for saving user profile
+* Offline-first calculations
+* Dark Theme by default
+* Responsive UI
+* Smooth animations
+* Beautiful charts and visualizations
+* Share statistics as image cards
+* Accurate astronomical calculations using scientific constants
+
+---
+
+# App Flow
+
+## Screen 1: Onboarding
+
+Display:
+
+"Discover your life in the context of the Universe"
+
+Collect:
+
+* Name
+* Date of Birth
+* Optional Birth Time
+
+Save locally.
+
+Button:
+
+"Show My Cosmic Age"
+
+---
+
+## Screen 2: Cosmic Dashboard
+
+Hero section:
+
+Show live age:
+
+* Years
+* Months
+* Days
+* Hours
+* Minutes
+* Seconds
+
+Update every second.
+
+Display a beautiful space background.
+
+---
+
+# Feature 1: Earth Time Statistics
+
+Calculate:
+
+* Age in years
+* Months
+* Weeks
+* Days
+* Hours
+* Minutes
+* Seconds
+* Estimated heartbeats
+* Estimated breaths taken
+* Number of sunrises experienced
+* Leap years lived through
+* Earth rotations experienced
+
+Display in animated cards.
+
+---
+
+# Feature 2: Planetary Ages
+
+Calculate age on:
+
+* Mercury
+* Venus
+* Earth
+* Mars
+* Jupiter
+* Saturn
+* Uranus
+* Neptune
+* Pluto
+
+Use real orbital periods.
+
+Display:
+
+* Planet image/icon
+* Orbital period
+* User age on that planet
+
+Add animated solar system visualization.
+
+---
+
+# Feature 3: Moon Statistics
+
+Calculate:
+
+* Full moons experienced
+* Lunar cycles completed
+* Moon orbits since birth
+* Current moon phase
+
+Display visually.
+
+---
+
+# Feature 4: Big Bang Timeline
+
+Universe age:
+
+13.8 billion years
+
+Calculate:
+
+* Years after Big Bang when user was born
+* Percentage of universe history experienced
+* User position on universal timeline
+
+Display:
+
+Big Bang → Galaxy Formation → Solar System Formation → Earth Formation → First Life → Dinosaurs → Humans → User Birth → Today
+
+Highlight user's position.
+
+---
+
+# Feature 5: Carl Sagan Cosmic Calendar
+
+Compress entire 13.8 billion years into one calendar year.
+
+Show:
+
+* When the user appears on the cosmic calendar
+* Time and date equivalent
+
+Visual interactive calendar.
+
+---
+
+# Feature 6: Distance Traveled Through Space
+
+Calculate since birth:
+
+### Earth Orbit Travel
+
+Earth moves around Sun.
+
+Calculate total distance traveled.
+
+### Solar System Galactic Travel
+
+Solar system travels around Milky Way at approximately 220 km/s.
+
+Calculate total distance traveled.
+
+Display:
+
+* Kilometers
+* AU
+* Light-years
+
+Animated counters.
+
+---
+
+# Feature 7: Light Travel Statistics
+
+Calculate:
+
+* Distance light has traveled during user's lifetime
+* Equivalent light-years
+
+Display visually.
+
+---
+
+# Feature 8: Milky Way Journey
+
+Show:
+
+* Position of Solar System in Milky Way
+* Approximate galactic distance traveled since birth
+* Percentage of one galactic orbit completed
+
+Display animated galaxy map.
+
+---
+
+# Feature 9: Universe Expansion
+
+Provide scientifically reasonable estimates of how much the observable universe expanded during user's lifetime.
+
+Clearly label as approximation.
+
+---
+
+# Feature 10: Planetary Birthday Tracker
+
+Show:
+
+* Next Mercury Birthday
+* Next Venus Birthday
+* Next Mars Birthday
+* Next Jupiter Birthday
+* Next Saturn Birthday
+
+Countdown timers.
+
+Optional notification reminders.
+
+---
+
+# Feature 11: Space Events During Your Lifetime
+
+Create a timeline of major astronomy and space exploration events.
+
+Examples:
+
+* Hubble Launch
+* ISS Launch
+* Cassini Mission
+* Pluto Flyby
+* Mars Rover Missions
+* James Webb Launch
+* First Black Hole Image
+
+Show user's age during each event.
+
+Scrollable timeline.
+
+---
+
+# Feature 12: Human Perspective Statistics
+
+Calculate:
+
+* Total sleeping time
+* Estimated walking distance
+* Heartbeats
+* Breaths
+* Meals eaten
+
+Clearly mark these as estimates.
+
+---
+
+# Feature 13: Cosmic Comparison Engine
+
+Show comparisons such as:
+
+"You have lived through only 0.0000002% of the Universe's history."
+
+"Jupiter considers you only 2 years old."
+
+"The Moon has circled Earth over 300 times since your birth."
+
+Create many engaging comparison cards.
+
+---
+
+# Feature 14: Daily Cosmic Fact
+
+Generate a daily insight using the user's age.
+
+Examples:
+
+"Today you've been alive for 1,000,000,000 seconds."
+
+"Earth has traveled another 2.57 million km around the Sun since yesterday."
+
+Display on home screen.
+
+---
+
+# Feature 15: Shareable Cosmic Cards
+
+Generate beautiful share images containing:
+
+* User name
+* Earth age
+* Planet ages
+* Universe percentage
+* Cosmic facts
+
+Allow sharing to:
+
+* WhatsApp
+* Instagram
+* Facebook
+* X
+
+---
+
+# Feature 16: Widgets
+
+Create Android widgets:
+
+Small Widget:
+
+* Live age counter
+
+Medium Widget:
+
+* Daily cosmic fact
+
+Large Widget:
+
+* Planetary ages
+
+---
+
+# Feature 17: Premium Visualizations
+
+Create:
+
+### Universe Timeline
+
+Interactive zoomable timeline.
+
+### Solar System Orbit Viewer
+
+Animated planetary orbit view.
+
+### Milky Way Viewer
+
+Animated galaxy map.
+
+### Cosmic Progress Ring
+
+Shows percentage of universe history experienced.
+
+### Age Counters
+
+Real-time animated counters.
+
+---
+
+# UI Design
+
+Style:
+
+* NASA-inspired
+* Dark space theme
+* Deep blacks
+* Subtle nebula backgrounds
+* Glassmorphism cards
+* Smooth animations
+* Particle stars
+* Premium typography
+
+Include:
+
+* Lottie animations
+* Motion transitions
+* Loading animations
+
+---
+
+# Scientific Constants
+
+Create a dedicated constants file containing:
+
+* Universe age
+* Planet orbital periods
+* Earth orbital velocity
+* Moon orbital period
+* Solar system galactic velocity
+* Speed of light
+* Astronomical Unit
+* Light year conversion
+
+All calculations should reference these constants.
+
+---
+
+# Project Structure
+
+Follow clean architecture:
+
+data/
+domain/
+presentation/
+ui/
+navigation/
+utils/
+
+Use repositories, use cases, view models, and state management.
+
+---
+
+# Deliverables
+
+Generate:
+
+1. Complete Android project structure
+2. All Kotlin source files
+3. Jetpack Compose UI screens
+4. Navigation setup
+5. ViewModels
+6. Calculation engine
+7. Data models
+8. Utility classes
+9. Scientific formulas
+10. Widget implementation
+11. Share card generation
+12. Material 3 theme
+13. Sample assets and icons
+14. Build-ready project
+
+The final result should feel like a polished, production-ready app that users would download from the Play Store, with accurate scientific calculations, premium design, smooth animations, and engaging educational content.
