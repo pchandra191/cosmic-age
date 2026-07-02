@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { Platform } from 'react-native';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useColors } from '@/hooks/useColors';
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
   accent?: boolean;
   glow?: boolean;
   glowColor?: string;
+  delay?: number;
 }
 
 export function CosmicCard({
@@ -28,6 +30,7 @@ export function CosmicCard({
   accent = false,
   glow = false,
   glowColor,
+  delay = 0,
 }: Props) {
   const colors = useColors();
 
@@ -66,25 +69,29 @@ export function CosmicCard({
 
   if (Platform.OS === 'ios') {
     return (
-      <BlurView intensity={20} tint="dark" style={[containerStyle, style]}>
-        <View style={[styles.inner, accent && { backgroundColor: 'rgba(77, 159, 255, 0.05)' }]}>
-          {cardContent}
-        </View>
-      </BlurView>
+      <Animated.View entering={FadeInUp.delay(delay).duration(420).springify().damping(18)}>
+        <BlurView intensity={24} tint="dark" style={[containerStyle, style]}>
+          <View style={[styles.inner, accent && { backgroundColor: 'rgba(77, 159, 255, 0.05)' }]}>
+            {cardContent}
+          </View>
+        </BlurView>
+      </Animated.View>
     );
   }
 
   return (
-    <View
-      style={[
-        containerStyle,
-        { backgroundColor: 'rgba(10, 15, 40, 0.85)' },
-        accent && { backgroundColor: 'rgba(20, 35, 80, 0.9)' },
-        style,
-      ]}
-    >
-      <View style={styles.inner}>{cardContent}</View>
-    </View>
+    <Animated.View entering={FadeInUp.delay(delay).duration(420).springify().damping(18)}>
+      <View
+        style={[
+          containerStyle,
+          { backgroundColor: 'rgba(10, 15, 40, 0.88)' },
+          accent && { backgroundColor: 'rgba(16, 34, 78, 0.92)' },
+          style,
+        ]}
+      >
+        <View style={styles.inner}>{cardContent}</View>
+      </View>
+    </Animated.View>
   );
 }
 

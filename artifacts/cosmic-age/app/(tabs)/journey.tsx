@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -14,11 +14,30 @@ import { SpaceBackground } from '@/components/SpaceBackground';
 import { CosmicCard, StatRow } from '@/components/CosmicCard';
 import { getDistanceTraveled, getMilkyWayStats, getUniverseExpansion, formatKm, formatLargeNumber } from '@/utils/calculations';
 import { AU_IN_KM, LIGHT_YEAR_IN_KM } from '@/constants/cosmic';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 function ProgressBar({ percent, color }: { percent: number; color: string }) {
+  const progress = useSharedValue(0);
+
+  useEffect(() => {
+    progress.value = withTiming(Math.min(percent, 100), {
+      duration: 900,
+      easing: Easing.out(Easing.cubic),
+    });
+  }, [percent]);
+
+  const fillStyle = useAnimatedStyle(() => ({
+    width: `${progress.value}%`,
+  }));
+
   return (
     <View style={progressStyles.track}>
-      <View style={[progressStyles.fill, { width: `${Math.min(percent, 100)}%`, backgroundColor: color }]} />
+      <Animated.View style={[progressStyles.fill, { backgroundColor: color }, fillStyle]} />
     </View>
   );
 }
@@ -155,16 +174,16 @@ export default function JourneyScreen() {
         <View style={[styles.contextCard, { borderColor: 'rgba(77,159,255,0.2)', backgroundColor: 'rgba(77,159,255,0.05)' }]}>
           <Text style={[styles.contextTitle, { color: colors.primary }]}>For Context</Text>
           <Text style={[styles.contextItem, { color: colors.foreground }]}>
-            • The nearest star (Proxima Centauri) is 4.24 light-years away
+            * The nearest star (Proxima Centauri) is 4.24 light-years away
           </Text>
           <Text style={[styles.contextItem, { color: colors.foreground }]}>
-            • The Milky Way galaxy is ~100,000 light-years across
+            * The Milky Way galaxy is ~100,000 light-years across
           </Text>
           <Text style={[styles.contextItem, { color: colors.foreground }]}>
-            • The Andromeda Galaxy is 2.537 million light-years away
+            * The Andromeda Galaxy is 2.537 million light-years away
           </Text>
           <Text style={[styles.contextItem, { color: colors.foreground }]}>
-            • The observable universe spans ~93 billion light-years
+            * The observable universe spans ~93 billion light-years
           </Text>
         </View>
       </ScrollView>

@@ -26,7 +26,7 @@ function BigBangNode({ event, isUser, isLast }: { event: typeof BIG_BANG_TIMELIN
         <Text style={[bbStyles.eventName, { color: isUser ? colors.primary : colors.foreground }]}>{event.name}</Text>
         <Text style={[bbStyles.eventDesc, { color: colors.mutedForeground }]}>{event.description}</Text>
         {isUser && (
-          <Text style={[bbStyles.youTag, { color: colors.primary }]}>← YOUR BIRTH</Text>
+          <Text style={[bbStyles.youTag, { color: colors.primary }]}>YOUR BIRTH</Text>
         )}
       </View>
     </View>
@@ -98,7 +98,7 @@ export default function TimelineScreen() {
                 <Text style={[bbStyles.eventDesc, { color: colors.mutedForeground }]}>
                   {(bigBang.yearsAfterBigBangAtBirth / 1e9).toFixed(3)} billion years after the Big Bang
                 </Text>
-                <Text style={[bbStyles.youTag, { color: colors.primary }]}>← YOU ARE HERE</Text>
+                <Text style={[bbStyles.youTag, { color: colors.primary }]}>YOU ARE HERE</Text>
               </View>
             </View>
           )}

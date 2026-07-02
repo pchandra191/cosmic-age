@@ -18,6 +18,7 @@ import * as Haptics from 'expo-haptics';
 import { useColors } from '@/hooks/useColors';
 import { SpaceBackground } from '@/components/SpaceBackground';
 import { useUser } from '@/context/UserContext';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 
 export default function OnboardingScreen() {
   const colors = useColors();
@@ -33,6 +34,7 @@ export default function OnboardingScreen() {
   const [minute, setMinute] = useState('');
   const [showTime, setShowTime] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     const d = parseInt(day, 10);
@@ -48,7 +50,7 @@ export default function OnboardingScreen() {
       return;
     }
     const birthDate = new Date(y, m - 1, d);
-    // Strict round-trip validation: ensure Date didn't normalize (e.g. Feb 31 → Mar)
+    // Strict round-trip validation: ensure Date didn't normalize (e.g. Feb 31 -> Mar)
     if (
       birthDate.getFullYear() !== y ||
       birthDate.getMonth() !== m - 1 ||
@@ -95,7 +97,7 @@ export default function OnboardingScreen() {
           showsVerticalScrollIndicator={false}
         >
           {/* Header */}
-          <View style={styles.header}>
+          <Animated.View entering={FadeInDown.duration(520).springify().damping(18)} style={styles.header}>
             <View style={styles.iconRing}>
               <LinearGradient
                 colors={['#1A3A8F', '#4D9FFF']}
@@ -111,20 +113,29 @@ export default function OnboardingScreen() {
             <Text style={[styles.subhead, { color: colors.mutedForeground }]}>
               Enter your details to begin your cosmic journey
             </Text>
-          </View>
+          </Animated.View>
 
           {/* Form */}
-          <View style={styles.form}>
+          <Animated.View entering={FadeInUp.delay(120).duration(480).springify().damping(18)} style={styles.form}>
             <View style={styles.fieldGroup}>
               <Text style={[styles.fieldLabel, { color: colors.mutedForeground }]}>YOUR NAME</Text>
               <TextInput
-                style={[styles.input, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.input }]}
+                style={[
+                  styles.input,
+                  {
+                    color: colors.foreground,
+                    borderColor: focusedField === 'name' ? colors.primary : colors.border,
+                    backgroundColor: focusedField === 'name' ? 'rgba(77,159,255,0.12)' : colors.input,
+                  },
+                ]}
                 value={name}
                 onChangeText={setName}
                 placeholder="Enter your name"
                 placeholderTextColor={colors.mutedForeground}
                 autoCapitalize="words"
                 returnKeyType="next"
+                onFocus={() => setFocusedField('name')}
+                onBlur={() => setFocusedField(null)}
               />
             </View>
 
@@ -132,40 +143,49 @@ export default function OnboardingScreen() {
               <Text style={[styles.fieldLabel, { color: colors.mutedForeground }]}>DATE OF BIRTH</Text>
               <View style={styles.dateRow}>
                 <TextInput
-                  style={[styles.dateInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.input, flex: 1 }]}
+                  style={[styles.dateInput, { color: colors.foreground, borderColor: focusedField === 'day' ? colors.primary : colors.border, backgroundColor: focusedField === 'day' ? 'rgba(77,159,255,0.12)' : colors.input, flex: 1 }]}
                   value={day}
                   onChangeText={(t) => setDay(t.replace(/[^0-9]/g, '').slice(0, 2))}
                   placeholder="DD"
                   placeholderTextColor={colors.mutedForeground}
                   keyboardType="number-pad"
                   maxLength={2}
+                  onFocus={() => setFocusedField('day')}
+                  onBlur={() => setFocusedField(null)}
                 />
                 <Text style={[styles.dateSep, { color: colors.mutedForeground }]}>/</Text>
                 <TextInput
-                  style={[styles.dateInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.input, flex: 1 }]}
+                  style={[styles.dateInput, { color: colors.foreground, borderColor: focusedField === 'month' ? colors.primary : colors.border, backgroundColor: focusedField === 'month' ? 'rgba(77,159,255,0.12)' : colors.input, flex: 1 }]}
                   value={month}
                   onChangeText={(t) => setMonth(t.replace(/[^0-9]/g, '').slice(0, 2))}
                   placeholder="MM"
                   placeholderTextColor={colors.mutedForeground}
                   keyboardType="number-pad"
                   maxLength={2}
+                  onFocus={() => setFocusedField('month')}
+                  onBlur={() => setFocusedField(null)}
                 />
                 <Text style={[styles.dateSep, { color: colors.mutedForeground }]}>/</Text>
                 <TextInput
-                  style={[styles.dateInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.input, flex: 2 }]}
+                  style={[styles.dateInput, { color: colors.foreground, borderColor: focusedField === 'year' ? colors.primary : colors.border, backgroundColor: focusedField === 'year' ? 'rgba(77,159,255,0.12)' : colors.input, flex: 2 }]}
                   value={year}
                   onChangeText={(t) => setYear(t.replace(/[^0-9]/g, '').slice(0, 4))}
                   placeholder="YYYY"
                   placeholderTextColor={colors.mutedForeground}
                   keyboardType="number-pad"
                   maxLength={4}
+                  onFocus={() => setFocusedField('year')}
+                  onBlur={() => setFocusedField(null)}
                 />
               </View>
             </View>
 
             <TouchableOpacity
               style={styles.timeToggle}
-              onPress={() => setShowTime((v) => !v)}
+              onPress={() => {
+                Haptics.selectionAsync();
+                setShowTime((v) => !v);
+              }}
               activeOpacity={0.7}
             >
               <Feather
@@ -179,50 +199,56 @@ export default function OnboardingScreen() {
             </TouchableOpacity>
 
             {showTime && (
-              <View style={styles.fieldGroup}>
+              <Animated.View entering={FadeInUp.duration(260)} style={styles.fieldGroup}>
                 <Text style={[styles.fieldLabel, { color: colors.mutedForeground }]}>BIRTH TIME</Text>
                 <View style={styles.dateRow}>
                   <TextInput
-                    style={[styles.dateInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.input, flex: 1 }]}
+                    style={[styles.dateInput, { color: colors.foreground, borderColor: focusedField === 'hour' ? colors.primary : colors.border, backgroundColor: focusedField === 'hour' ? 'rgba(77,159,255,0.12)' : colors.input, flex: 1 }]}
                     value={hour}
                     onChangeText={(t) => setHour(t.replace(/[^0-9]/g, '').slice(0, 2))}
                     placeholder="HH"
                     placeholderTextColor={colors.mutedForeground}
                     keyboardType="number-pad"
                     maxLength={2}
+                    onFocus={() => setFocusedField('hour')}
+                    onBlur={() => setFocusedField(null)}
                   />
                   <Text style={[styles.dateSep, { color: colors.mutedForeground }]}>:</Text>
                   <TextInput
-                    style={[styles.dateInput, { color: colors.foreground, borderColor: colors.border, backgroundColor: colors.input, flex: 1 }]}
+                    style={[styles.dateInput, { color: colors.foreground, borderColor: focusedField === 'minute' ? colors.primary : colors.border, backgroundColor: focusedField === 'minute' ? 'rgba(77,159,255,0.12)' : colors.input, flex: 1 }]}
                     value={minute}
                     onChangeText={(t) => setMinute(t.replace(/[^0-9]/g, '').slice(0, 2))}
                     placeholder="MM"
                     placeholderTextColor={colors.mutedForeground}
                     keyboardType="number-pad"
                     maxLength={2}
+                    onFocus={() => setFocusedField('minute')}
+                    onBlur={() => setFocusedField(null)}
                   />
                 </View>
-              </View>
+              </Animated.View>
             )}
-          </View>
+          </Animated.View>
 
           {/* CTA */}
-          <TouchableOpacity
-            style={[styles.ctaButton, isSubmitting && { opacity: 0.6 }]}
-            onPress={handleSubmit}
-            activeOpacity={0.85}
-            disabled={isSubmitting}
-          >
-            <LinearGradient
-              colors={['#1A3A8F', '#4D9FFF']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.ctaGradient}
+          <Animated.View entering={FadeInUp.delay(220).duration(420).springify().damping(18)} style={styles.ctaWrap}>
+            <TouchableOpacity
+              style={[styles.ctaButton, isSubmitting && { opacity: 0.6 }]}
+              onPress={handleSubmit}
+              activeOpacity={0.85}
+              disabled={isSubmitting}
             >
-              <Feather name="zap" size={18} color="#FFFFFF" />
-              <Text style={styles.ctaText}>Show My Cosmic Age</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              <LinearGradient
+                colors={['#1A3A8F', '#4D9FFF']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.ctaGradient}
+              >
+                <Feather name="zap" size={18} color="#FFFFFF" />
+                <Text style={styles.ctaText}>Show My Cosmic Age</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
 
           <Text style={[styles.disclaimer, { color: colors.mutedForeground }]}>
             All calculations are done locally. No data leaves your device.
@@ -324,6 +350,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     marginBottom: 16,
+  },
+  ctaWrap: {
+    width: '100%',
   },
   ctaGradient: {
     flexDirection: 'row',

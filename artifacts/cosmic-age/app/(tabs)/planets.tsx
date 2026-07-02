@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -14,11 +14,39 @@ import { SpaceBackground } from '@/components/SpaceBackground';
 import { CosmicCard, StatRow } from '@/components/CosmicCard';
 import { PLANETS } from '@/constants/cosmic';
 import { getPlanetaryAges, formatCountdown } from '@/utils/calculations';
+import Animated, {
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSpring,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 function PlanetOrbit({ size, color, glowColor, selected }: { size: number; color: string; glowColor: string; selected: boolean }) {
   const displaySize = Math.max(16, Math.min(50, size * 5));
+  const scale = useSharedValue(selected ? 1.1 : 1);
+  const pulse = useSharedValue(0);
+
+  useEffect(() => {
+    scale.value = withSpring(selected ? 1.16 : 1, { damping: 12, stiffness: 180 });
+  }, [selected]);
+
+  useEffect(() => {
+    pulse.value = withRepeat(
+      withTiming(1, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+      -1,
+      true,
+    );
+  }, []);
+
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value + (selected ? pulse.value * 0.04 : 0) }],
+  }));
+
   return (
-    <View style={[
+    <Animated.View style={[
       orbitStyles.planet,
       {
         width: displaySize,
@@ -31,10 +59,29 @@ function PlanetOrbit({ size, color, glowColor, selected }: { size: number; color
         elevation: selected ? 8 : 2,
         borderWidth: selected ? 2 : 0,
         borderColor: selected ? '#FFFFFF' : 'transparent',
-        transform: [{ scale: selected ? 1.1 : 1 }],
       },
+      animStyle,
     ]} />
   );
+}
+
+function PulseSun() {
+  const pulse = useSharedValue(0);
+
+  useEffect(() => {
+    pulse.value = withRepeat(
+      withTiming(1, { duration: 2100, easing: Easing.inOut(Easing.sin) }),
+      -1,
+      true,
+    );
+  }, []);
+
+  const animStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: 1 + pulse.value * 0.08 }],
+    opacity: 0.86 + pulse.value * 0.14,
+  }));
+
+  return <Animated.View style={[styles.sun, animStyle]} />;
 }
 
 export default function PlanetsScreen() {
@@ -73,7 +120,7 @@ export default function PlanetsScreen() {
 
         {/* Solar system mini-view */}
         <View style={[styles.solarSystem, { borderColor: colors.border, backgroundColor: 'rgba(0,0,30,0.6)' }]}>
-          <View style={styles.sun} />
+          <PulseSun />
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.orbitRow}>
             {PLANETS.map((planet) => (
               <TouchableOpacity
@@ -141,35 +188,39 @@ export default function PlanetsScreen() {
 
         {/* All planets list */}
         <Text style={[styles.sectionTitle, { color: colors.foreground }]}>All Planetary Ages</Text>
-        {PLANETS.map((planet) => {
+        {PLANETS.map((planet, index) => {
           const pAge = planetaryAges.find((a) => a.planetId === planet.id);
           if (!pAge) return null;
           return (
-            <TouchableOpacity
+            <Animated.View
               key={planet.id}
-              onPress={() => setSelectedId(planet.id)}
-              activeOpacity={0.8}
+              entering={FadeInUp.delay(80 + index * 45).duration(360).springify().damping(18)}
             >
-              <CosmicCard
-                style={[styles.planetRow, selectedId === planet.id && { borderColor: `${planet.color}66` }]}
+              <TouchableOpacity
+                onPress={() => setSelectedId(planet.id)}
+                activeOpacity={0.8}
               >
-                <View style={styles.planetRowInner}>
-                  <View style={[styles.rowDot, { backgroundColor: planet.color }]} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={[styles.rowPlanetName, { color: colors.foreground }]}>{planet.name}</Text>
-                    <Text style={[styles.rowDesc, { color: colors.mutedForeground }]}>{planet.description}</Text>
+                <CosmicCard
+                  style={[styles.planetRow, selectedId === planet.id && { borderColor: `${planet.color}66` }]}
+                >
+                  <View style={styles.planetRowInner}>
+                    <View style={[styles.rowDot, { backgroundColor: planet.color, shadowColor: planet.glowColor }]} />
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.rowPlanetName, { color: colors.foreground }]}>{planet.name}</Text>
+                      <Text style={[styles.rowDesc, { color: colors.mutedForeground }]}>{planet.description}</Text>
+                    </View>
+                    <View style={{ alignItems: 'flex-end' }}>
+                      <Text style={[styles.rowAge, { color: planet.color }]}>
+                        {Math.floor(pAge.ageInPlanetYears).toLocaleString()} yrs
+                      </Text>
+                      <Text style={[styles.rowCountdown, { color: colors.mutedForeground }]}>
+                        Next bday: {formatCountdown(pAge.daysUntilNextBirthday)}
+                      </Text>
+                    </View>
                   </View>
-                  <View style={{ alignItems: 'flex-end' }}>
-                    <Text style={[styles.rowAge, { color: planet.color }]}>
-                      {Math.floor(pAge.ageInPlanetYears).toLocaleString()} yrs
-                    </Text>
-                    <Text style={[styles.rowCountdown, { color: colors.mutedForeground }]}>
-                      Next bday: {formatCountdown(pAge.daysUntilNextBirthday)}
-                    </Text>
-                  </View>
-                </View>
-              </CosmicCard>
-            </TouchableOpacity>
+                </CosmicCard>
+              </TouchableOpacity>
+            </Animated.View>
           );
         })}
       </ScrollView>
@@ -284,6 +335,10 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.38,
+    shadowRadius: 6,
+    elevation: 3,
   },
   rowPlanetName: {
     fontSize: 15,
