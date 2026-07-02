@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Cosmic Age",
+    "slug": "cosmic-age",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "cosmic-age",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000014"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.cosmicage.app"
+    },
+    "android": {
+      "backgroundColor": "#000014"
+    },
+    "web": {
+      "favicon": "./assets/images/icon.png",
+      "backgroundColor": "#000014"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://replit.com/"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

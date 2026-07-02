@@ -1,0 +1,2 @@
+- [Expo dark-only palette pattern](expo-dark-palette.md) — when both light/dark palettes are identical, cast `colors.dark as Palette` to avoid broken Record cast TS error in useColors.ts
+- [Expo DOB validation](expo-dob-validation.md) — always round-trip validate Date inputs: new Date(y,m-1,d) must match y/m/d to catch impossible dates (Feb 31 normalizes silently)
