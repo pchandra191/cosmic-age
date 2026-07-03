@@ -2,9 +2,6 @@
   "cli": {
     "version": ">= 16.0.0"
   },
-  "install": {
-    "usePNPM": true
-  },
   "build": {
     "production": {
       "android": {
@@ -19,5 +16,8 @@
         "track": "internal"
       }
     }
+  },
+  "env": {
+    "npm_config_ignore_scripts": "true"
   }
 }
