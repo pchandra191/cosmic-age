@@ -2,6 +2,9 @@
   "cli": {
     "version": ">= 16.0.0"
   },
+  "install": {
+    "usePNPM": true
+  },
   "build": {
     "production": {
       "android": {
