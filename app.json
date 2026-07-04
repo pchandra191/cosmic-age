@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "workingDirectory": "./artifacts/cosmic-age",
+    "extra": {
+      "eas": {
+        "projectId": "3d3cdff6-293f-4f5d-84f7-0c09ee5a7e47"
+      }
+    },
+    "android": {
+      "package": "com.cosmicage.app"
+    }
+  }
+}
