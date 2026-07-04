@@ -1,5 +1,8 @@
 {
   "expo": {
+    "name": "Cosmic Age",
+    "slug": "cosmic-age",
+    "version": "1.0.0",
     "workingDirectory": "./artifacts/cosmic-age",
     "extra": {
       "eas": {
