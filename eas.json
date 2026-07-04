@@ -1,11 +1,10 @@
 {
   "cli": {
-    "version": ">= 20.5.1",
-    "packageManager": "pnpm"
+    "version": ">= 20.5.1"
   },
   "build": {
     "production": {
-      "node": "22.x",
+      "node": "22",
       "autoIncrement": true
     }
   },
